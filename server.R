@@ -1,9 +1,8 @@
 library(shiny)
 
 function(input , output){
-        #######################
+
         # Normal distribution #
-        #######################
         
         output$mean <- renderUI({
                 # print("mean")
@@ -27,9 +26,7 @@ function(input , output){
                 }
         })
         
-        ##########################
         # t, F, X^2 distribution #
-        ##########################
         
         output$df1 <- renderUI({
                 # print("df1")
@@ -55,11 +52,8 @@ function(input , output){
                 }
         })
         
-        
-        #########################
         # Binomial distribution #
-        #########################
-        
+
         output$n <- renderUI({
                 # print("n")
                 if (input$dist == "rbinom") {
@@ -85,9 +79,7 @@ function(input , output){
                 }
         })
         
-        #########################
         # Cauchy and Weibull distribution #
-        #########################
         
         output$scale <- renderUI({
                 if(input$dist %in% c("rcauchy","rweibull")){
@@ -99,10 +91,7 @@ function(input , output){
                 }
         })
         
-        
-        #########################################
         # Beta , Gamma and Weibull distribution #
-        #########################################
         
         output$shape1 <- renderUI({
                 if(input$dist %in% c("rgamma","rweibull","rbeta")){
@@ -121,10 +110,8 @@ function(input , output){
                                      , value = 1)
                 }
         })
-        
-        ############################
+
         # Exponential and Gamma distribution #
-        ############################
         
         output$rate <- renderUI({
                 if(input$dist %in% c("rgamma","rexp")){
@@ -135,10 +122,8 @@ function(input , output){
                                      , step = 0.01)
                 }
         })
-        
-        ############################
+
         # Poisson distribution #
-        ############################
         
         output$lambda <- renderUI({
                 if(input$dist == "rpois"){
@@ -150,10 +135,8 @@ function(input , output){
                         
                 }
         })
-        
-        ############################
+
         # Uniform distribution #
-        ############################
         
         output$min <- renderUI({
                 if(input$dist == "runif"){
@@ -174,10 +157,8 @@ function(input , output){
                                      , step = 1)
                 }
         })
-        
-        ############################
+
         # Plot #
-        ############################
         
         output$myplot <- renderPlot({
                 
