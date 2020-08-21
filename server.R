@@ -1,8 +1,10 @@
-library(shiny)
+
+
 
 function(input , output){
-
+        #######################
         # Normal distribution #
+        #######################
         
         output$mean <- renderUI({
                 # print("mean")
@@ -26,14 +28,16 @@ function(input , output){
                 }
         })
         
+        ##########################
         # t, F, X^2 distribution #
+        ##########################
         
         output$df1 <- renderUI({
                 # print("df1")
                 if (input$dist %in% c("rt", "rchisq", "rf")) {
                         numericInput(ifelse(input$dist %in% c("rt", "rchisq"), "df", "df1"),
                                      "Degrees of freedom",
-                                     value = 1,
+                                     value = 2,
                                      min = 1,
                                      step = 1
                         )
@@ -52,8 +56,11 @@ function(input , output){
                 }
         })
         
+        
+        #########################
         # Binomial distribution #
-
+        #########################
+        
         output$n <- renderUI({
                 # print("n")
                 if (input$dist == "rbinom") {
@@ -79,19 +86,23 @@ function(input , output){
                 }
         })
         
+        #########################
         # Cauchy and Weibull distribution #
+        #########################
         
         output$scale <- renderUI({
                 if(input$dist %in% c("rcauchy","rweibull")){
                         numericInput("scale"
                                      , "Scale:"
                                      , min = 1
-                                     , max = 50
                                      , value = 1)
                 }
         })
         
+        
+        #########################################
         # Beta , Gamma and Weibull distribution #
+        #########################################
         
         output$shape1 <- renderUI({
                 if(input$dist %in% c("rgamma","rweibull","rbeta")){
@@ -110,8 +121,10 @@ function(input , output){
                                      , value = 1)
                 }
         })
-
+        
+        ######################################
         # Exponential and Gamma distribution #
+        ######################################
         
         output$rate <- renderUI({
                 if(input$dist %in% c("rgamma","rexp")){
@@ -122,8 +135,10 @@ function(input , output){
                                      , step = 0.01)
                 }
         })
-
+        
+        ########################
         # Poisson distribution #
+        ########################
         
         output$lambda <- renderUI({
                 if(input$dist == "rpois"){
@@ -135,8 +150,10 @@ function(input , output){
                         
                 }
         })
-
+        
+        ########################
         # Uniform distribution #
+        ########################
         
         output$min <- renderUI({
                 if(input$dist == "runif"){
@@ -157,8 +174,10 @@ function(input , output){
                                      , step = 1)
                 }
         })
-
-        # Plot #
+        
+        ############################
+                  # Plot #
+        ############################
         
         output$myplot <- renderPlot({
                 
@@ -179,18 +198,18 @@ function(input , output){
                                             , " and Standard deviation =",round(sqrt(input$df/(input$df - 2)), 2)))
                 }
                 else if(input$dist == "rchisq"){
-                        l <- input$df - 20
+                        l <- input$df - 5
                         u <- input$df + 20
                         x <- seq(l , u , 0.01)
                         fx <- dchisq(x , df = input$df)
-                        plot(x , fx , type = "l" , ylim = c(0,0.5)
+                        plot(x , fx , type = "l" , ylim = c(0,0.5) , lwd = 2
                              , xlab = "Degree of freedom" , ylab = "Probability density function"
                              , main = paste("Mean =",input$df
                                             , " and Standard deviation =",round(sqrt(2*input$df),2)))
                 }
                 else if(input$dist == "rf"){
                         l <- round(input$df2/(input$df2 - 2),2) - 5
-                        u <- round(input$df2/(input$df2 - 2),2) + 10
+                        u <- round(input$df2/(input$df2 - 2),2) + 5
                         x <- seq(l , u , 0.01)
                         fx <- df(x ,df1 = input$df1 , df2 = input$df2)
                         plot(x , fx , type = "l"
@@ -200,28 +219,28 @@ function(input , output){
                         
                 }
                 else if(input$dist == "rbinom"){
-                        l <- round(input$n*input$p) - 20
-                        u <- round(input$n*input$p) + 20
+                        l <- round(input$n*input$p) - 10
+                        u <- round(input$n*input$p) + 10
                         x <- seq(l , u , 1)
                         fx <- dbinom(x , size = input$n , prob = input$p)
-                        plot(x , fx , type = "h" , ylim = c(0,0.3) , lwd = 2
+                        plot(x , fx , type = "h" , ylim = c(0,0.35) , lwd = 2
                              , xlab = "Probability" , ylab = "Probability mass function" 
                              , main = paste("Mean =",input$n*input$p 
                                             , " and Standard deviation =",round(sqrt(input$n*(1-input$p)), 2)))
                         
                 }
                 else if(input$dist == "rcauchy"){
-                        l <- input$mu - 50
-                        u <- input$mu + 50
+                        l <- input$mu - 20
+                        u <- input$mu + 20
                         x <- seq(l , u , 0.01)
                         fx <- dcauchy(x , location = input$mu , scale = input$scale)
-                        plot(x , fx , type = "l" , ylab = "Probability density function" , ylim = c(0,0.3) , lwd = 2
+                        plot(x , fx , type = "l" , ylab = "Probability density function" , ylim = c(0,0.35) , lwd = 2
                              , main = "The standard Cauchy distribution coincides with the Student's t distribution with 1 degree of freedom")
                         
                 }
                 else if(input$dist == "rbeta"){
-                        l <- round(input$shape1/(input$shape1 + input$shape2),2) - 2
-                        u <- round(input$shape1/(input$shape1 + input$shape2),2) + 5
+                        l <- round(input$shape1/(input$shape1 + input$shape2),2) - 1
+                        u <- round(input$shape1/(input$shape1 + input$shape2),2) + 1
                         x <- seq(l , u , 0.01)
                         fx <- dbeta(x ,shape1 = input$shape1 ,shape2 = input$shape2)
                         plot(x , fx , type = "l", xlab = "Probability" , ylab = "Probability density function" , lwd = 2
@@ -233,7 +252,7 @@ function(input , output){
                         u <- round(1/input$rate , 2) + 10
                         x <- seq(l , u , 0.01) 
                         fx <- dexp(x , rate = input$rate)
-                        plot(x,fx, type = "l" , ylim = c(0,0.5) , ylab = "Probability density function" , lwd = 2
+                        plot(x,fx, type = "l" , ylab = "Probability density function" , lwd = 2
                              , main = paste("Mean =",round(1/input$rate , 2) 
                                             , " and Standard deviation =",round(sqrt(1/input$rate^2), 2)))
                 }
@@ -242,14 +261,14 @@ function(input , output){
                         u <- round(input$shape/input$rate , 2) + 10
                         x <- seq(l , u , 0.01) 
                         fx <- dgamma(x ,shape = input$shape , rate = input$rate)
-                        plot(x,fx, type = "l" , ylim = c(0,1) , ylab = "Probability" , lwd = 2
+                        plot(x,fx, type = "l" , ylab = "Probability" , lwd = 2
                              , main = paste("Mean =",round(input$shape/input$rate , 2)
                                             , " and Standard deviation =",round(sqrt(input$shape/input$rate^2), 2)))
                 }
                 else if(input$dist == "rgeom"){
-                        l <- round(1/input$p , 2) - 5
-                        u <- round(1/input$p , 2) + 10
-                        x <- seq(l , u , 0.01) 
+                        l <- round(1/input$p) - 5
+                        u <- round(1/input$p) + 10
+                        x <- seq(l , u , 1) 
                         fx <- dgeom(x , prob = input$p)
                         plot(x,fx, type = "h" , xlab = "Trials needed to get the first success"
                              , ylab = "Probability" , lwd = 2
@@ -257,8 +276,8 @@ function(input , output){
                                             , " and Standard deviation =",round(sqrt((1-input$p)/input$p^2), 2)))
                 }
                 else if(input$dist == "rpois"){
-                        l <- round(input$lambda , 2) - 20
-                        u <- round(input$lambda , 2) + 20
+                        l <- round(input$lambda) - 20
+                        u <- round(input$lambda) + 20
                         x <- seq(l , u , 1) 
                         fx <- dpois(x , lambda = input$lambda)
                         plot(x,fx, type = "h" , xlab = "Number of events per unit of time"
@@ -271,8 +290,8 @@ function(input , output){
                         u <- round(0.5*(input$min + input$max) , 2) + 10
                         x <- seq(l , u , 0.01) 
                         fx <- dunif(x , min = input$min , max = input$max)
-                        plot(x,fx, type = "l" , xlab = "X"
-                             , ylab = "Probability" , ylim = c(0,1) , lwd = 2
+                        plot(x,fx, type = "l" , lwd = 2
+                             , ylab = "Probability" , ylim = c(0,1) 
                              , main = paste("Mean =",round(0.5*(input$min + input$max) , 2)
                                             , " and Standard deviation =",round(sqrt((1/12)*(input$max - input$min)^2), 2)))
                 }
@@ -281,8 +300,8 @@ function(input , output){
                         u <- round(input$scale*gamma(1 + (1/input$shape)) , 2) + 10
                         x <- seq(l , u , 0.01)
                         fx <- dweibull(x , shape = input$shape , scale = input$scale)
-                        plot(x , fx , type = "l" , ylim = c(0,2) 
-                             , ylab = "Probability density function" , lwd = 2
+                        plot(x , fx , type = "l", lwd = 2
+                             , ylab = "Probability density function" 
                              , main =  paste("Mean =",round(input$scale*gamma(1 + (1/input$shape)) , 2)
                                              , " and Standard deviation =",round(sqrt(input$scale^2*((gamma(1+2/input$shape)) - (gamma(1 + 1/input$shape))^2)), 2)))
                 }

@@ -44,9 +44,7 @@ pageWithSidebar(
                 helpText(a(href = "https://www.facebook.com/rafi.tanjim/", target = "_blank", "Tanjim Rafi")),
                 helpText(a(href = "http://www.ru.ac.bd/stat/", target = "_blank", "Department of Statistics, University of Rajshahi")),
                 helpText(a(href = "https://github.com/TanjimRafi/Distribution", target = "_blank", "View Code!!")),
-                
         ),
-        
         mainPanel(
                 plotOutput("myplot")
         )
